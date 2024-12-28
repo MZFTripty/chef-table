@@ -1,35 +1,24 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-key */
 
 import { useEffect, useState } from "react"
 import RecipeCard from "./RecipeCard"
 
 
-export default function RecipeCards() {
-    const [reciprCards, setRecipeCards] = useState([])
-    const [loading,setLoading] = useState(true)
+export default function RecipeCards({handleWantToCook}) {
+    const [recipeCards, setRecipeCards] = useState([])
 
     useEffect(() => {
-        const fetchData = async()=>{
-            try{
-                const response = await fetch('https://jsonplaceholder.typicode.com/todos/1')
-                const data = await response.json()
-                console.log(data)
-            }
-            catch{
-                console.log("something wrong")
-            }
-            finally{
-                setLoading(false)
-            }
-        }
-        fetchData()
+        fetch('recipe.json')
+            .then(res => res.json())
+            .then(data => setRecipeCards(data))
     }, [])
     
     return (
-        <div>
-            <h1>{reciprCards.length}</h1>
+        <div className="grid grid-cols-2 max-w-5xl gap-5 ">
+            {/* <h1>{recipeCards.length}</h1> */}
             {
-                loading? <div>loading</div> : reciprCards.map(recipeCard => <RecipeCard recipeCard={recipeCard}></RecipeCard>)
+                recipeCards.map(recipeCard => <RecipeCard recipeCard={recipeCard} handleWantToCook={handleWantToCook}></RecipeCard>)
             }
         </div>
     )
